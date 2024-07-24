@@ -1,11 +1,13 @@
-import React from 'react'
-import { StatusBar } from 'expo-status-bar'
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import { wp, hp } from '../helpers/common'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useRouter } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import React from 'react'
+import { Image, Pressable, StyleSheet, View } from 'react-native'
 import Animated, { FadeInDown } from 'react-native-reanimated'
-import { theme } from '../constants/theme';
+import { theme } from '../constants/theme'
+import { hp, wp } from '../helpers/common'
 export default function WelcomeScreen() {
+    const router = useRouter();
     return (
         <View style={styles.container}>
             <StatusBar style="light" />
@@ -20,7 +22,7 @@ export default function WelcomeScreen() {
                     <Animated.Text entering={FadeInDown.delay(400).springify()} style={styles.title}>Pexels</Animated.Text>
                     <Animated.Text entering={FadeInDown.delay(500).springify()} style={styles.punchLine}>Get Catchy Pixels for your devices!</Animated.Text>
                     <Animated.View entering={FadeInDown.delay(600).springify()}>
-                        <Pressable style={styles.startBtn}>
+                        <Pressable style={styles.startBtn} onPress={() => router.push('home')}>
                             <Animated.Text entering={FadeInDown.delay(650).springify()} style={styles.startText}>Let's Explore</Animated.Text>
                         </Pressable>
                     </Animated.View>
