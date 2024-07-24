@@ -1,9 +1,10 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { wp, hp } from '../helpers/common'
 import { LinearGradient } from 'expo-linear-gradient'
 import Animated, { FadeInDown } from 'react-native-reanimated'
+import { theme } from '../constants/theme';
 export default function WelcomeScreen() {
     return (
         <View style={styles.container}>
@@ -15,6 +16,15 @@ export default function WelcomeScreen() {
                     style={styles.gradient}
                     start={{ x: 0.5, y: 0 }}
                     end={{ x: 0.5, y: 0.8 }} />
+                <View style={styles.contentWrapper}>
+                    <Text style={styles.title}>Pexels</Text>
+                    <Text style={styles.punchLine}>Get Catchy Pixels for your devices!</Text>
+                    <View >
+                        <Pressable style={styles.startBtn}>
+                            <Text style={styles.startText}>Let's Explore</Text>
+                        </Pressable>
+                    </View>
+                </View>
             </Animated.View>
         </View>
     )
@@ -34,5 +44,36 @@ const styles = StyleSheet.create({
         height: hp(65),
         bottom: 0,
         position: 'absolute',
+    },
+    contentWrapper: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        gap: 14,
+    },
+    title: {
+        fontSize: hp(8),
+        color: theme.colors.neutral(0.9),
+        fontWeight: theme.fontWeights.bold
+    },
+    punchLine: {
+        fontSize: hp(3),
+        letterSpacing: 1,
+        marginBottom: 10,
+        fontWeight: theme.fontWeights.medium,
+    },
+    startBtn: {
+        marginBottom: 50,
+        backgroundColor: theme.colors.neutral(0.9),
+        padding: 15,
+        paddingHorizontal: 90,
+        borderRadius: theme.radius.xl,
+        borderCurve: 'continuous',
+    },
+    startText: {
+        color: theme.colors.white,
+        fontSize: hp(3),
+        fontWeight: theme.fontWeights.medium,
+        letterSpacing: 1,
     }
 })
