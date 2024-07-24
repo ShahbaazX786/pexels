@@ -10,20 +10,20 @@ export default function WelcomeScreen() {
         <View style={styles.container}>
             <StatusBar style="light" />
             <Image source={require('../assets/images/welcome.png')} style={styles.bgImage} resizeMode="cover" />
-            <Animated.View entering={FadeInDown.duration(800)} style={styles.container}>
+            <Animated.View entering={FadeInDown.duration(500)} style={styles.container}>
                 <LinearGradient
                     colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.5)', 'white', 'white']}
                     style={styles.gradient}
                     start={{ x: 0.5, y: 0 }}
                     end={{ x: 0.5, y: 0.8 }} />
                 <View style={styles.contentWrapper}>
-                    <Text style={styles.title}>Pexels</Text>
-                    <Text style={styles.punchLine}>Get Catchy Pixels for your devices!</Text>
-                    <View >
+                    <Animated.Text entering={FadeInDown.delay(400).springify()} style={styles.title}>Pexels</Animated.Text>
+                    <Animated.Text entering={FadeInDown.delay(500).springify()} style={styles.punchLine}>Get Catchy Pixels for your devices!</Animated.Text>
+                    <Animated.View entering={FadeInDown.delay(600).springify()}>
                         <Pressable style={styles.startBtn}>
-                            <Text style={styles.startText}>Let's Explore</Text>
+                            <Animated.Text entering={FadeInDown.delay(650).springify()} style={styles.startText}>Let's Explore</Animated.Text>
                         </Pressable>
-                    </View>
+                    </Animated.View>
                 </View>
             </Animated.View>
         </View>
