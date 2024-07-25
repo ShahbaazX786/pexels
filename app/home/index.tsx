@@ -29,7 +29,7 @@ const HomeScreen = () => {
                         <Feather name="search" size={24} color={theme.colors.neutral(0.4)} />
                     </View>
                     <TextInput placeholder='Search for Wallpapers...' style={styles.searchInput} value={searchQuery} onChangeText={value => setSearchQuery(value)} ref={searchInputRef} />
-                    {searchQuery && (<Pressable style={styles.closeIcon}>
+                    {searchQuery && (<Pressable style={styles.closeIcon} onPress={() => setSearchQuery('')}>
                         <Ionicons name="close" size={24} color={theme.colors.neutral(0.6)} />
                     </Pressable>)}
                 </View>
