@@ -3,11 +3,18 @@ import { hp } from '@/helpers/common'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
-const CategoryItem = ({ title, index }: any) => {
+const CategoryItem = ({ title, index, isActive, changeActiveCategory }: any) => {
+    let color = isActive ? theme.colors.white : theme.colors.neutral(0.8);
+    let backgroundColor = isActive ? theme.colors.neutral(0.8) : theme.colors.white;
+
+    const updateCategorySelection = () => {
+        changeActiveCategory(isActive ? '' : title);
+    }
+
     return (
         <View key={index}>
-            <Pressable style={styles.category}>
-                <Text style={styles.title}>{title}</Text>
+            <Pressable style={[styles.category, { backgroundColor }]} onPress={() => updateCategorySelection()}>
+                <Text style={[styles.title, { color }]}>{title}</Text>
             </Pressable>
         </View>
     )
@@ -23,10 +30,10 @@ const styles = StyleSheet.create({
         borderColor: theme.colors.grayBG,
         borderRadius: theme.radius.lg,
         borderCurve: 'continuous',
-        backgroundColor: theme.colors.white
     },
     title: {
         fontSize: hp(1.8),
-        fontWeight: theme.fontWeights.medium as any
+        fontWeight: theme.fontWeights.medium as any,
+        textTransform: 'capitalize'
     }
 })
