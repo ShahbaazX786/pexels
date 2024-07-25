@@ -2,6 +2,7 @@ import { theme } from '@/constants/theme'
 import { hp } from '@/helpers/common'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
+import Animated, { FadeInRight } from 'react-native-reanimated'
 
 const CategoryItem = ({ title, index, isActive, changeActiveCategory }: any) => {
     let color = isActive ? theme.colors.white : theme.colors.neutral(0.8);
@@ -12,11 +13,11 @@ const CategoryItem = ({ title, index, isActive, changeActiveCategory }: any) => 
     }
 
     return (
-        <View key={index}>
+        <Animated.View key={index} entering={FadeInRight.delay(index * 200).duration(1000).springify().damping(10)}>
             <Pressable style={[styles.category, { backgroundColor }]} onPress={() => updateCategorySelection()}>
                 <Text style={[styles.title, { color }]}>{title}</Text>
             </Pressable>
-        </View>
+        </Animated.View>
     )
 }
 
