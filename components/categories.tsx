@@ -4,7 +4,7 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import CategoryItem from './categoryItem';
 
-const Categories = () => {
+const Categories = ({ activeCategory, changeActiveCategory }: any) => {
     return (
         <FlatList
             horizontal
@@ -13,7 +13,7 @@ const Categories = () => {
             data={constants.categories}
             keyExtractor={item => item}
             renderItem={({ item, index }) => (
-                <CategoryItem title={item} index={index} />
+                <CategoryItem title={item} index={index} isActive={activeCategory === item} changeActiveCategory={changeActiveCategory} />
             )}
         />
     )
