@@ -4,12 +4,19 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { theme } from '@/constants/theme';
 import { hp, wp } from '@/helpers/common';
+import Categories from '@/components/categories';
 
 const HomeScreen = () => {
     const { top } = useSafeAreaInsets();
     const paddingTop = top > 0 ? top + 10 : 30;
     const [searchQuery, setSearchQuery] = useState('');
+    const [activeCategory, setActiveCategory] = useState('');
     const searchInputRef = useRef(null);
+
+    const changeActiveCategory = (category: string) => {
+        setActiveCategory(category);
+    }
+
     return (
         <View style={[styles.container, { paddingTop }]}>
             {/* Header */}
@@ -32,6 +39,11 @@ const HomeScreen = () => {
                     {searchQuery && (<Pressable style={styles.closeIcon} onPress={() => setSearchQuery('')}>
                         <Ionicons name="close" size={24} color={theme.colors.neutral(0.6)} />
                     </Pressable>)}
+                </View>
+
+                {/* Categories */}
+                <View>
+                    <Categories activeCategory={activeCategory} changeActiveCategory={changeActiveCategory} />
                 </View>
             </ScrollView>
         </View>
@@ -82,5 +94,4 @@ const styles = StyleSheet.create({
         padding: 8,
         borderRadius: theme.radius.sm,
     }
-
 })
