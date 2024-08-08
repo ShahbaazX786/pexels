@@ -1,10 +1,12 @@
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useRef, useState } from 'react'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
-import { theme } from '@/constants/theme';
-import { hp, wp } from '@/helpers/common';
 import Categories from '@/components/categories';
+import ImageMasonry from '@/components/imageMasonry';
+import { theme } from '@/constants/theme';
+import { fetchData } from '@/helpers/api';
+import { hp, wp } from '@/helpers/common';
+import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
     const { top } = useSafeAreaInsets();
@@ -12,6 +14,22 @@ const HomeScreen = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState('');
     const searchInputRef = useRef(null);
+    const [images, setImages] = useState([]);
+
+    useEffect(() => {
+        fetchImages();
+    }, [])
+
+    const fetchImages = async (params = { page: 2 }, append = false) => {
+        let res = await fetchData(params);
+        if (res.success && res?.data) {
+            if (append) {
+                setImages([...images, ...res.data] as any);
+            } else {
+                setImages([...res.data] as any);
+            }
+        }
+    }
 
     const changeActiveCategory = (category: string) => {
         setActiveCategory(category);
@@ -45,6 +63,12 @@ const HomeScreen = () => {
                 <View>
                     <Categories activeCategory={activeCategory} changeActiveCategory={changeActiveCategory} />
                 </View>
+
+                {/* Images Masonry */}
+                <View>
+                    {images.length > 0 && <ImageMasonry data={images} />}
+                </View>
+
             </ScrollView>
         </View>
     )
