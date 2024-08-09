@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { MasonryFlashList } from '@shopify/flash-list'
-import ImageCard from './imageCard'
+import { imageMasonryPropsType } from '@/constants/types'
 import { getColumnCount, wp } from '@/helpers/common'
+import { MasonryFlashList } from '@shopify/flash-list'
+import { StyleSheet, View } from 'react-native'
+import ImageCard from './imageCard'
 
-const ImageMasonry = ({ data }: any) => {
+const ImageMasonry = ({ data }: imageMasonryPropsType) => {
     const columns = getColumnCount();
     return (
         <View style={styles.container}>
