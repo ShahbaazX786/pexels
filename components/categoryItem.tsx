@@ -1,10 +1,11 @@
 import { theme } from '@/constants/theme'
+import { categoryItemPropsType } from '@/constants/types'
 import { hp } from '@/helpers/common'
 import React from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text } from 'react-native'
 import Animated, { FadeInRight } from 'react-native-reanimated'
 
-const CategoryItem = ({ title, index, isActive, changeActiveCategory }: any) => {
+const CategoryItem = ({ title, index, isActive, changeActiveCategory }: categoryItemPropsType) => {
     let color = isActive ? theme.colors.white : theme.colors.neutral(0.8);
     let backgroundColor = isActive ? theme.colors.neutral(0.8) : theme.colors.white;
 
