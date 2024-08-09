@@ -1,9 +1,10 @@
 import { theme } from '@/constants/theme';
+import { imageCardPropsType } from '@/constants/types';
 import { getImageOrientation, wp } from '@/helpers/common';
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet } from 'react-native';
 
-const ImageCard = ({ item, index, columns }: any) => {
+const ImageCard = ({ item, index, columns }: imageCardPropsType) => {
     const getImageHeight = () => {
         let { imageHeight: height, imageWidth: width } = item;
         const imageOrientation = getImageOrientation(height, width);
