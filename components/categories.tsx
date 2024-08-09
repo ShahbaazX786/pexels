@@ -1,10 +1,11 @@
 import { constants } from '@/constants/data';
+import { categoryPropsType } from '@/constants/types';
 import { wp } from '@/helpers/common';
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import CategoryItem from './categoryItem';
 
-const Categories = ({ activeCategory, changeActiveCategory }: any) => {
+const Categories = ({ activeCategory, changeActiveCategory }: categoryPropsType) => {
     return (
         <FlatList
             horizontal
