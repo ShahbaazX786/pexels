@@ -1,18 +1,21 @@
 import Categories from '@/components/categories';
 import ImageMasonry from '@/components/imageMasonry';
 import { theme } from '@/constants/theme';
+import { nullishString } from '@/constants/types';
 import { fetchData } from '@/helpers/api';
 import { hp, wp } from '@/helpers/common';
+import useDebounce from '@/helpers/hooks';
 import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
+    let page = 1;
     const { top } = useSafeAreaInsets();
     const paddingTop = top > 0 ? top + 10 : 30;
-    const [searchQuery, setSearchQuery] = useState('');
-    const [activeCategory, setActiveCategory] = useState('');
+    const [searchQuery, setSearchQuery] = useState<nullishString>('');
+    const [activeCategory, setActiveCategory] = useState<nullishString>('');
     const searchInputRef = useRef(null);
     const [images, setImages] = useState([]);
 
@@ -20,7 +23,8 @@ const HomeScreen = () => {
         fetchImages();
     }, [])
 
-    const fetchImages = async (params = { page: 2 }, append = false) => {
+    const fetchImages = async (params = { page: 1 }, append = false) => {
+        console.log('params', params, page);
         let res = await fetchData(params);
         if (res.success && res?.data) {
             if (append) {
@@ -32,8 +36,42 @@ const HomeScreen = () => {
     }
 
     const changeActiveCategory = (category: string) => {
+        let params = {
+            page: 1,
+            category: ''
+        }
         setActiveCategory(category);
+        clearSearch();
+        if (category) {
+            params.category = category;
+        }
+        fetchImages(params, false);
     }
+
+    const handleSearch = (text: string) => {
+        setSearchQuery(text);
+        if (text.length > 2) {
+            page = 1;
+            setImages([]);
+            setActiveCategory(null);
+            fetchImages({ page, q: text }, false);
+        }
+
+        if (text === "") {
+            searchInputRef?.current?.clear();
+            page = 1;
+            setImages([]);
+            fetchImages({ page }, false);
+        }
+    }
+
+    const clearSearch = () => {
+        setSearchQuery("");
+        searchInputRef?.current?.clear();
+        setImages([]);
+    }
+
+    const handleSearchDebounce = useCallback(useDebounce(handleSearch, 500), []);
 
     return (
         <View style={[styles.container, { paddingTop }]}>
@@ -53,8 +91,8 @@ const HomeScreen = () => {
                     <View style={styles.searchIcon}>
                         <Feather name="search" size={24} color={theme.colors.neutral(0.4)} />
                     </View>
-                    <TextInput placeholder='Search for Wallpapers...' style={styles.searchInput} value={searchQuery} onChangeText={value => setSearchQuery(value)} ref={searchInputRef} />
-                    {searchQuery && (<Pressable style={styles.closeIcon} onPress={() => setSearchQuery('')}>
+                    <TextInput placeholder='Search for Wallpapers...' style={styles.searchInput} onChangeText={handleSearchDebounce} ref={searchInputRef} />
+                    {searchQuery && (<Pressable style={styles.closeIcon} onPress={clearSearch}>
                         <Ionicons name="close" size={24} color={theme.colors.neutral(0.6)} />
                     </Pressable>)}
                 </View>
