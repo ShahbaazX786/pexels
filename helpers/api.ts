@@ -3,12 +3,12 @@ import axios from "axios";
 const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const apiUrl = API_URL + `?key=${API_KEY}`;
-const formatUrl = (params: any) => {
+const formatUrl = (params: string | Object | any) => {
     let url = apiUrl + "&per_page=25&safeSearch=true&editors_choices=true";
     if (!params) return url;
     let paramKeys = Object.keys(params);
-    paramKeys.map((key: any) => {
-        let value = key == 'q' ? encodeURIComponent(params[key]) : paramKeys[key];
+    paramKeys.map((key: string) => {
+        let value = key == 'q' ? encodeURIComponent(params[key]) : params[key];
         url += `&${key}=${value}`;
     });
     console.log(url);
