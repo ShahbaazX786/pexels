@@ -1,13 +1,15 @@
 import Categories from '@/components/categories';
+import FilterModal from '@/components/filterModal';
 import ImageMasonry from '@/components/imageMasonry';
+import SearchBar from '@/components/searchBar';
 import { theme } from '@/constants/theme';
 import { nullishString } from '@/constants/types';
 import { fetchData } from '@/helpers/api';
 import { hp, wp } from '@/helpers/common';
 import useDebounce from '@/helpers/hooks';
-import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
@@ -17,8 +19,10 @@ const HomeScreen = () => {
     const [searchQuery, setSearchQuery] = useState<nullishString>('');
     const [activeCategory, setActiveCategory] = useState<nullishString>('');
     const searchInputRef = useRef(null);
+    const modalRef = useRef(null);
     const [images, setImages] = useState([]);
 
+    // API calls on page load or via method call.
     useEffect(() => {
         fetchImages();
     }, [])
@@ -35,6 +39,7 @@ const HomeScreen = () => {
         }
     }
 
+    // category changing method.
     const changeActiveCategory = (category: string) => {
         let params = {
             page: 1,
@@ -48,6 +53,7 @@ const HomeScreen = () => {
         fetchImages(params, false);
     }
 
+    // Search methods
     const handleSearch = (text: string) => {
         setSearchQuery(text);
         if (text.length > 2) {
@@ -73,6 +79,16 @@ const HomeScreen = () => {
 
     const handleSearchDebounce = useCallback(useDebounce(handleSearch, 500), []);
 
+    // Filter Modal Methods
+
+    const openFilterModal = () => {
+        modalRef?.current?.present();
+    }
+
+    const closeFilterModal = () => {
+        modalRef?.current?.close();
+    }
+
     return (
         <View style={[styles.container, { paddingTop }]}>
             {/* Header */}
@@ -80,22 +96,14 @@ const HomeScreen = () => {
                 <Pressable>
                     <Text style={styles.title}>Pexels</Text>
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={openFilterModal}>
                     <FontAwesome6 name="bars-staggered" size={22} color={theme.colors.neutral(0.7)} style={styles.title} />
                 </Pressable>
             </View>
 
             {/* Search Bar */}
             <ScrollView contentContainerStyle={{ gap: 15 }}>
-                <View style={styles.searchBar}>
-                    <View style={styles.searchIcon}>
-                        <Feather name="search" size={24} color={theme.colors.neutral(0.4)} />
-                    </View>
-                    <TextInput placeholder='Search for Wallpapers...' style={styles.searchInput} onChangeText={handleSearchDebounce} ref={searchInputRef} />
-                    {searchQuery && (<Pressable style={styles.closeIcon} onPress={clearSearch}>
-                        <Ionicons name="close" size={24} color={theme.colors.neutral(0.6)} />
-                    </Pressable>)}
-                </View>
+                <SearchBar />
 
                 {/* Categories */}
                 <View>
@@ -105,6 +113,12 @@ const HomeScreen = () => {
                 {/* Images Masonry */}
                 <View>
                     {images.length > 0 && <ImageMasonry data={images} />}
+                </View>
+
+
+                {/* Filters Modal / Dialog box*/}
+                <View>
+                    <FilterModal modalRef={modalRef} />
                 </View>
 
             </ScrollView>
@@ -130,30 +144,4 @@ const styles = StyleSheet.create({
         fontWeight: theme.fontWeights.semibold as any,
         color: theme.colors.neutral(0.9)
     },
-    searchBar: {
-        marginHorizontal: wp(4),
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: theme.colors.grayBG,
-        backgroundColor: theme.colors.white,
-        padding: 6,
-        paddingLeft: 10,
-        borderRadius: theme.radius.lg,
-    },
-    searchIcon: {
-        padding: 8
-    },
-    searchInput: {
-        flex: 1,
-        borderRadius: theme.radius.sm,
-        paddingVertical: 10,
-        fontSize: hp(1.8),
-    },
-    closeIcon: {
-        backgroundColor: theme.colors.neutral(0.1),
-        padding: 8,
-        borderRadius: theme.radius.sm,
-    }
 })
