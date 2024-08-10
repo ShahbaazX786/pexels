@@ -1,5 +1,5 @@
 import Categories from '@/components/categories';
-import FilterModal from '@/components/filterModal';
+import FilterModal from '@/components/filters/filterModal';
 import ImageMasonry from '@/components/imageMasonry';
 import { theme } from '@/constants/theme';
 import { nullishString } from '@/constants/types';
@@ -20,6 +20,7 @@ const HomeScreen = () => {
     const searchInputRef = useRef(null);
     const modalRef = useRef(null);
     const [images, setImages] = useState([]);
+    const [filters, setFilters] = useState(null);
 
     // API calls on page load or via method call.
     useEffect(() => {
@@ -88,6 +89,16 @@ const HomeScreen = () => {
         modalRef?.current?.close();
     }
 
+    const applyFilters = () => {
+        closeFilterModal();
+    }
+
+    const resetFilters = () => {
+        closeFilterModal();
+    }
+
+
+
     return (
         <View style={[styles.container, { paddingTop }]}>
             {/* Header */}
@@ -125,7 +136,7 @@ const HomeScreen = () => {
 
                 {/* Filters Modal / Dialog box*/}
                 <View>
-                    <FilterModal modalRef={modalRef} />
+                    <FilterModal modalRef={modalRef} filters={filters} setFilters={setFilters} onClose={closeFilterModal} onApply={applyFilters} onReset={resetFilters} />
                 </View>
 
             </ScrollView>
