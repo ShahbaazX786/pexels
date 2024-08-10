@@ -1,8 +1,8 @@
 export type nullishString = null | string;
 
 export type categoryPropsType = {
-    activeCategory: string;
-    changeActiveCategory: React.Dispatch<React.SetStateAction<string>>,
+    activeCategory: string | null;
+    changeActiveCategory: React.Dispatch<React.SetStateAction<string>> | Function,
 }
 
 export type categoryItemPropsType = {
