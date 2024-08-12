@@ -1,8 +1,8 @@
-<Center>
+<center>
 
 ![Pexels Logo](assets/images/Pexels.png)
 
-</Center>
+</center>
 
 # Pexels - Your Mood, Your Wallpaper!
 
