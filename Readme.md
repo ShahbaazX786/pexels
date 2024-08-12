@@ -1,14 +1,18 @@
-![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
+![Pexels Logo](assets/images/Pexels.png)
 
-# Pexels - Wallpaper App
+# Pexels - Your Mood, Your Wallpaper!
 
-Pexels is simply put a wallpaper searching and downloading app for your mobile devices.
+> ###### Pexels brings you fresh, stunning wallpapers every day. Perfectly tailored for any device, our app ensures you always have the latest and greatest background to match your style and mood."
 
-## Overview
+## App Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<div style="display: flex; flex-direction: row; flex-wrap:wrap; justify-content: flex-start; align-items:center; width:400px; padding: 10px; gap:10px;">
+  <img style="border:1px solid black; border-radius:10px;" src="assets/Documentation/Splash-Screen.png" alt="Splash Screen"/>
+  <img style="border:1px solid black; border-radius:10px;" src="assets/Documentation/Home-Screen.png" alt="Home Screen"/>
+  <img style="border:1px solid black; border-radius:10px;" src="assets/Documentation/Search.png" alt="Search"/>
+  <img style="border:1px solid black; border-radius:10px;" src="assets/Documentation/Filters.png" alt="Filters"/>
+  <img style="border:1px solid black; border-radius:10px;" src="assets/Documentation/Categories.png" alt="Categories"/>
+</div>
 
 ## Features
 
