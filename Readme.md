@@ -1,4 +1,8 @@
+<Center>
+
 ![Pexels Logo](assets/images/Pexels.png)
+
+</Center>
 
 # Pexels - Your Mood, Your Wallpaper!
 
@@ -6,7 +10,7 @@
 
 ## App Screenshots
 
-<div style="display: flex; flex-direction: row; flex-wrap:wrap; justify-content: flex-start; align-items:center; width:400px; padding: 10px; gap:10px;">
+<div style="display: flex; flex-direction: row; justify-content: flex-start; width:200px; height:250px; padding: 10px; gap:10px;">
   <img style="border:1px solid black; border-radius:10px;" src="assets/Documentation/Splash-Screen.png" alt="Splash Screen"/>
   <img style="border:1px solid black; border-radius:10px;" src="assets/Documentation/Home-Screen.png" alt="Home Screen"/>
   <img style="border:1px solid black; border-radius:10px;" src="assets/Documentation/Search.png" alt="Search"/>
