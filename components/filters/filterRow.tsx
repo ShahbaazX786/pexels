@@ -1,6 +1,5 @@
 import { theme } from '@/constants/theme'
 import { FilterRowPropsType } from '@/constants/types'
-import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 const FilterRow = ({ data, filterName, filters, setFilters }: FilterRowPropsType) => {

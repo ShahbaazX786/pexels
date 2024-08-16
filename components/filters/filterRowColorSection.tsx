@@ -1,7 +1,6 @@
 import { theme } from '@/constants/theme'
 import { FilterRowPropsType } from '@/constants/types'
-import React from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 
 const FilterRowColorSection = ({ data, filterName, filters, setFilters }: FilterRowPropsType) => {
 
