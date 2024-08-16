@@ -1,6 +1,7 @@
 import Categories from '@/components/categories';
 import FilterModal from '@/components/filters/filterModal';
 import ImageMasonry from '@/components/imageMasonry';
+import SelectedFilters from '@/components/selectedFilters';
 import { theme } from '@/constants/theme';
 import { nullishString, paramsType } from '@/constants/types';
 import { fetchData } from '@/helpers/api';
@@ -8,7 +9,7 @@ import { hp, wp } from '@/helpers/common';
 import useDebounce from '@/helpers/hooks';
 import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
@@ -114,8 +115,6 @@ const HomeScreen = () => {
         setFilters(null);
     }
 
-
-
     return (
         <View style={[styles.container, { paddingTop }]}>
             {/* Header */}
@@ -145,6 +144,12 @@ const HomeScreen = () => {
                     <Categories activeCategory={activeCategory} changeActiveCategory={changeActiveCategory} />
                 </View>
 
+                {/* Applied filters */}
+
+                {
+                    filters && (<SelectedFilters filters={filters} setFilters={setFilters} setImages={setImages} searchQuery={searchQuery} activeCategory={activeCategory} fetchImages={fetchImages} />)
+                }
+
                 {/* Images Masonry */}
                 <View>
                     {images.length > 0 && <ImageMasonry data={images} />}
@@ -156,8 +161,12 @@ const HomeScreen = () => {
                     <FilterModal modalRef={modalRef} filters={filters} setFilters={setFilters} onClose={closeFilterModal} onApply={applyFilters} onReset={resetFilters} />
                 </View>
 
-            </ScrollView>
-        </View>
+                <View style={{ marginBottom: 70, marginTop: images.length > 0 ? 10 : 70 }}>
+                    <ActivityIndicator size={'large'} />
+                </View>
+
+            </ScrollView >
+        </View >
     )
 }
 
