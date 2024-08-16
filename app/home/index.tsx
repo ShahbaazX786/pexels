@@ -90,11 +90,22 @@ const HomeScreen = () => {
     }
 
     const applyFilters = () => {
+        if (filters) {
+            page = 1;
+            let params = {
+                page,
+                ...filters as {}
+            }
+            setImages([]);
+            if (activeCategory) params.category = activeCategory;
+            if (searchQuery) params.q = searchQuery;
+            fetchImages(params, false);
+        }
         closeFilterModal();
     }
 
     const resetFilters = () => {
-        closeFilterModal();
+        setFilters(null);
     }
 
 
