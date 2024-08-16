@@ -3,9 +3,25 @@ import { hp } from '@/helpers/common';
 import { StyleSheet, Text, View } from 'react-native';
 
 const FilterSection = ({ title, content }: any) => {
+
+    const modifyTitle = () => {
+        switch (title) {
+            case 'order':
+                return 'Sort Order'
+            case 'type':
+                return 'Art Type'
+            case 'colors':
+                return 'Color Theme'
+            case 'orientation':
+                return 'Orientation'
+            default:
+                break;
+        }
+    }
+
     return (
         <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitleText}>{title}</Text>
+            <Text style={styles.sectionTitleText}>{modifyTitle()}</Text>
             <View>
                 {content}
             </View>
