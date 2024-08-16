@@ -6,7 +6,7 @@ import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { BlurView } from 'expo-blur';
 import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { Extrapolation, FadeInDown, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import FilterRow from './filterRow';
 import FilterRowColorSection from './filterRowColorSection';
 import FilterSection from './filterSection';
@@ -36,22 +36,22 @@ const FilterModal = ({ modalRef, onClose, onApply, onReset, filters, setFilters 
                             let sectionView = sections[name];
                             let sectionData = constants.filters[name];
                             return (
-                                <View key={name}>
+                                <Animated.View entering={FadeInDown.delay((index * 80) + 50).springify().damping(7)} key={name}>
                                     <FilterSection title={name} content={sectionView({ data: sectionData, filters, setFilters, filterName: name, })} />
-                                </View>
+                                </Animated.View>
                             )
                         })
                     }
 
                     {/* Action Buttons */}
-                    <View style={styles.actionBtns}>
-                        <Pressable style={styles.resetBtn} onPress={onReset}>
+                    <Animated.View entering={FadeInDown.delay(500).springify().damping(7)} style={styles.actionBtns}>
+                        <Pressable style={[styles.resetBtn]} onPress={onReset}>
                             <Text style={[styles.btnText, { color: theme.colors.neutral(0.9) }]}>Reset</Text>
                         </Pressable>
                         <Pressable style={styles.applyBtn} onPress={onApply}>
                             <Text style={[styles.btnText, { color: theme.colors.white }]}>Apply</Text>
                         </Pressable>
-                    </View>
+                    </Animated.View>
 
                 </View>
             </BottomSheetView>
