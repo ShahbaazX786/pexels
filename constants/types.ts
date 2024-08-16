@@ -44,3 +44,10 @@ export type FilterRowPropsType = {
     filters: any,
     setFilters: React.Dispatch<React.SetStateAction<string>> | Function,
 }
+
+export type paramsType = {
+    page: number,
+    category?: string,
+    q?: string,
+    filters?: Object,
+}

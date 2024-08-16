@@ -2,7 +2,7 @@ import Categories from '@/components/categories';
 import FilterModal from '@/components/filters/filterModal';
 import ImageMasonry from '@/components/imageMasonry';
 import { theme } from '@/constants/theme';
-import { nullishString } from '@/constants/types';
+import { nullishString, paramsType } from '@/constants/types';
 import { fetchData } from '@/helpers/api';
 import { hp, wp } from '@/helpers/common';
 import useDebounce from '@/helpers/hooks';
@@ -93,10 +93,7 @@ const HomeScreen = () => {
     const applyFilters = () => {
         if (filters) {
             page = 1;
-            let params = {
-                page,
-                ...filters as {}
-            }
+            let params: paramsType = { page, ...filters as {} }
             setImages([]);
             if (activeCategory) params.category = activeCategory;
             if (searchQuery) params.q = searchQuery;
@@ -106,6 +103,14 @@ const HomeScreen = () => {
     }
 
     const resetFilters = () => {
+        if (filters) {
+            page = 1;
+            setFilters(null);
+            setImages([]);
+            let params: paramsType = { page }
+            if (activeCategory) params.category = activeCategory;
+            if (searchQuery) params.q = searchQuery;
+        }
         setFilters(null);
     }
 
