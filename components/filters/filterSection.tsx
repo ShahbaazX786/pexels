@@ -1,12 +1,11 @@
 import { theme } from '@/constants/theme';
 import { hp } from '@/helpers/common';
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const FilterSection = ({ name, content }: any) => {
+const FilterSection = ({ title, content }: any) => {
     return (
         <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitleText}>{name}</Text>
+            <Text style={styles.sectionTitleText}>{title}</Text>
             <View>
                 {content}
             </View>
