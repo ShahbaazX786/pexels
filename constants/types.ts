@@ -51,3 +51,12 @@ export type paramsType = {
     q?: string,
     filters?: Object,
 }
+
+export type SelectedFiltersPropsType = {
+    filters: any,
+    setFilters: React.Dispatch<React.SetStateAction<string>> | Function,
+    activeCategory: string | nullishString,
+    searchQuery: string | nullishString,
+    setImages: React.Dispatch<React.SetStateAction<[]>> | Function,
+    fetchImages: Function
+}
