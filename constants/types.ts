@@ -28,14 +28,14 @@ export type filtersType = {
     order: string[],
     orientation: string[],
     type: string[],
-    colors: string[],
+    theme: string[],
 }
 
 export type sectionsType = {
     order: (props: filterSectionPropsType) => React.JSX.Element,
     orientation: (props: filterSectionPropsType) => React.JSX.Element,
     type: (props: filterSectionPropsType) => React.JSX.Element,
-    colors: (props: filterSectionPropsType) => React.JSX.Element,
+    theme: (props: filterSectionPropsType) => React.JSX.Element,
 }
 
 export type FilterRowPropsType = {

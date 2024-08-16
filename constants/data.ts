@@ -6,7 +6,7 @@ const filters: filtersType = {
     order: ["popular", "latest"],
     orientation: ["vertical", "horizontal"],
     type: ["photo", "illustration", "vector"],
-    colors: ["red", "green", "yellow", "orange", "turquoise", "blue", "white", "black", "brown", "pink", "gray", "purple"],
+    theme: ["red", "green", "yellow", "orange", "turquoise", "blue", "white", "black", "brown", "pink", "gray", "purple"],
 }
 
 
