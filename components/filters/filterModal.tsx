@@ -16,7 +16,7 @@ const FilterModal = ({ modalRef, onClose, onApply, onReset, filters, setFilters 
         "order": (props: filterSectionPropsType) => <FilterRow {...props} />,
         "orientation": (props: filterSectionPropsType) => <FilterRow {...props} />,
         "type": (props: filterSectionPropsType) => <FilterRow {...props} />,
-        "theme": (props: filterSectionPropsType) => <FilterRowColorSection {...props} />,
+        "colors": (props: filterSectionPropsType) => <FilterRowColorSection {...props} />,
     }
     const snapPoints = useMemo(() => ['75%'], []);
 
