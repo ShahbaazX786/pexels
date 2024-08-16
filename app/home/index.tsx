@@ -43,7 +43,8 @@ const HomeScreen = () => {
     const changeActiveCategory = (category: string) => {
         let params = {
             page: 1,
-            category: ''
+            category: '',
+            ...filters
         }
         setActiveCategory(category);
         clearSearch();
