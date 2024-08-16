@@ -61,14 +61,14 @@ const HomeScreen = () => {
             page = 1;
             setImages([]);
             setActiveCategory(null);
-            fetchImages({ page, q: text }, false);
+            fetchImages({ page, q: text, ...filters }, false);
         }
 
         if (text === "") {
             searchInputRef?.current?.clear();
             page = 1;
             setImages([]);
-            fetchImages({ page }, false);
+            fetchImages({ page, ...filters }, false);
         }
     }
 
