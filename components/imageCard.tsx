@@ -4,14 +4,14 @@ import { getImageOrientation, wp } from '@/helpers/common';
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet } from 'react-native';
 
-const ImageCard = ({ item, index, columns }: imageCardPropsType) => {
+const ImageCard = ({ item, index, columns, router }: imageCardPropsType) => {
     const getImageHeight = () => {
         let { imageHeight: height, imageWidth: width } = item;
         const imageOrientation = getImageOrientation(height, width);
         return { height: imageOrientation };
     }
     return (
-        <Pressable key={index} style={[styles.container]}>
+        <Pressable key={index} style={[styles.container]} onPress={() => { router.push({ pathname: 'home/image', params: { ...item } }) }}>
             <Image
                 style={[styles.image, getImageHeight()]}
                 source={item?.webformatURL}
