@@ -4,7 +4,7 @@ import { MasonryFlashList } from '@shopify/flash-list'
 import { StyleSheet, View } from 'react-native'
 import ImageCard from './imageCard'
 
-const ImageMasonry = ({ data }: imageMasonryPropsType) => {
+const ImageMasonry = ({ data, router }: imageMasonryPropsType) => {
     const columns = getColumnCount();
     return (
         <View style={styles.container}>
@@ -12,7 +12,7 @@ const ImageMasonry = ({ data }: imageMasonryPropsType) => {
                 data={data}
                 numColumns={columns}
                 contentContainerStyle={styles.listContainerStyle}
-                renderItem={({ item, index }) => <ImageCard item={item} columns={columns} index={index} />}
+                renderItem={({ item, index }) => <ImageCard item={item} columns={columns} index={index} router={router} />}
                 estimatedItemSize={200}
             />
         </View>
