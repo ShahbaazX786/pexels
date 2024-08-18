@@ -16,10 +16,13 @@ export type imageCardPropsType = {
     item: Object | any;
     index: number;
     columns: number;
+    router: IntrinsicAttributes;
 }
 
 export type imageMasonryPropsType = {
     data: Object | any;
+    router: IntrinsicAttributes;
+;
 }
 
 export type filterSectionPropsType = React.JSX.IntrinsicAttributes & { data: any; filterName: any; filters: any; setFilters: any; }
