@@ -1,5 +1,5 @@
 import Categories from '@/components/categories';
-import FilterModal from '@/components/filters/filterModal';
+import FilterModal from '@/components/Filters/filterModal';
 import ImageMasonry from '@/components/imageMasonry';
 import SelectedFilters from '@/components/selectedFilters';
 import { theme } from '@/constants/theme';
@@ -8,11 +8,13 @@ import { fetchData } from '@/helpers/api';
 import { hp, wp } from '@/helpers/common';
 import useDebounce from '@/helpers/hooks';
 import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
+    const router = useRouter();
     const [page, setPage] = useState(2);
     const modalRef = useRef(null);
     const scrollRef = useRef(null);
@@ -179,7 +181,7 @@ const HomeScreen = () => {
 
                 {/* Images Masonry */}
                 <View>
-                    {images.length > 0 && <ImageMasonry data={images} />}
+                    {images.length > 0 && <ImageMasonry data={images} router={router} />}
                 </View>
 
 
