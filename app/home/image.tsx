@@ -2,21 +2,22 @@ import { theme } from '@/constants/theme';
 import { hp, wp } from '@/helpers/common';
 import { Entypo, Octicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { ActivityIndicator, Image, Platform, Pressable, StyleSheet, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Sharing from 'expo-sharing';
+import React, { useState } from 'react';
+import { ActivityIndicator, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
 
 const ImageScreen = () => {
     const router = useRouter();
     const item = useLocalSearchParams();
     const [status, setStatus] = useState('loading');
-    let uri: string = Array.isArray(item?.webformatURL) ? item.webformatURL[0] : item.webformatURL; // Ensure it's a string
+    let uri: string = Array.isArray(item?.largeImageURL) ? item.largeImageURL[0] : item.largeImageURL; // Ensure it's a string
     const fileName = item.previewURL?.split('/').pop();
     const imageURL = uri;
-    const filePath = `${FileSystem.documentDirectory}${fileName}`
+    const filePath = `${FileSystem.documentDirectory}${fileName}`;
 
 
     const getImageDimensions = () => {
@@ -28,8 +29,6 @@ const ImageScreen = () => {
         if (aspectRatio < 1) {
             calculatedWidth = calculatedHeight * aspectRatio;
         }
-
-        console.log(calculatedWidth, calculatedHeight, uri);
 
         return {
             width: calculatedWidth,
@@ -43,19 +42,34 @@ const ImageScreen = () => {
     }
 
     const shareImage = async () => {
-        setStatus('sharing');
-        const res = await downloadFile();
-        if (res) {
-            await Sharing.shareAsync(res);
-            setStatus('');
+        if (Platform.OS === 'web') {
+            showToast('Link Copied', 'success');
+        } else {
+            setStatus('sharing');
+            const res = await downloadFile();
+            if (res) {
+                await Sharing.shareAsync(res);
+                setStatus('');
+            }
         }
     }
 
     const downloadImage = async () => {
-        setStatus('downloading');
-        const res = await downloadFile();
-        if (res) {
-            console.log('Image saved successfully at', res);
+        if (Platform.OS === 'web') {
+            const anchor = document.createElement('a');
+            anchor.href = imageURL;
+            anchor.target = "_blank";
+            anchor.download = fileName || 'download';
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        } else {
+            setStatus('downloading');
+            const res = await downloadFile();
+            if (res) {
+                console.log('Image saved successfully at', res);
+                showToast('Image saved successfully', 'success');
+            }
         }
 
     }
@@ -67,13 +81,36 @@ const ImageScreen = () => {
             return uri;
         } catch (error) {
             setStatus('');
-            console.error('error occuered while saving the file', error);
+            showToast('Unable to save the Image', 'error');
+            console.log('error occuered while saving the file', error);
         }
     }
 
     const closeDialog = () => {
         router.back();
 
+    }
+
+    const showToast = (message: string, type: string) => {
+        Toast.show({
+            text1: message,
+            type,
+            position: 'bottom',
+        })
+    }
+
+    const toastConfig = {
+        success: ({ text1, props, ...rest }: any) =>
+        (
+            <View style={styles.toast}>
+                <Text style={styles.toastText}>{text1}</Text>
+            </View>
+        ),
+        error: ({ text1, props, ...rest }: any) => (
+            <View style={styles.toast}>
+                <Text style={styles.toastText}>{text1}</Text>
+            </View>
+        )
     }
 
     return (
@@ -114,6 +151,7 @@ const ImageScreen = () => {
 
                 </Animated.View>
             </View>
+            <Toast config={toastConfig} visibilityTime={2500} />
         </BlurView >
     )
 }
@@ -161,6 +199,19 @@ const styles = StyleSheet.create(
             borderCurve: 'continuous',
             marginHorizontal: 10,
             paddingHorizontal: 10,
+        },
+        toast: {
+            padding: 15,
+            paddingHorizontal: 30,
+            borderRadius: theme.radius.xl,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.8)',
+        },
+        toastText: {
+            fontSize: hp(1.8),
+            fontWeight: theme.fontWeights.semibold as '600',
+            color: theme.colors.white,
         }
     }
 )
