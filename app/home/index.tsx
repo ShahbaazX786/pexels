@@ -13,22 +13,24 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
-    let page = 1;
+    const [page, setPage] = useState(2);
+    const modalRef = useRef(null);
+    const scrollRef = useRef(null);
+    const searchInputRef = useRef(null);
     const { top } = useSafeAreaInsets();
     const paddingTop = top > 0 ? top + 10 : 30;
-    const [searchQuery, setSearchQuery] = useState<nullishString>('');
-    const [activeCategory, setActiveCategory] = useState<nullishString>('');
-    const searchInputRef = useRef(null);
-    const modalRef = useRef(null);
     const [images, setImages] = useState([]);
     const [filters, setFilters] = useState(null);
+    const [isBottomReached, setIsBottomReached] = useState(false);
+    const [searchQuery, setSearchQuery] = useState<nullishString>('');
+    const [activeCategory, setActiveCategory] = useState<nullishString>('');
 
     // API calls on page load or via method call.
     useEffect(() => {
         fetchImages();
     }, [])
 
-    const fetchImages = async (params = { page: 1 }, append = false) => {
+    const fetchImages = async (params = { page: 1 }, append = true) => {
         console.log('params', params, page);
         let res = await fetchData(params);
         if (res.success && res?.data) {
@@ -45,7 +47,7 @@ const HomeScreen = () => {
         let params = {
             page: 1,
             category: '',
-            ...filters
+            ...filters as any
         }
         setActiveCategory(category);
         clearSearch();
@@ -59,17 +61,17 @@ const HomeScreen = () => {
     const handleSearch = (text: string) => {
         setSearchQuery(text);
         if (text.length > 2) {
-            page = 1;
+            setPage(1);
             setImages([]);
             setActiveCategory(null);
-            fetchImages({ page, q: text, ...filters }, false);
+            fetchImages({ page, q: text, ...filters as any }, false);
         }
 
         if (text === "") {
             searchInputRef?.current?.clear();
-            page = 1;
+            setPage(1);
             setImages([]);
-            fetchImages({ page, ...filters }, false);
+            fetchImages({ page, ...filters as any }, false);
         }
     }
 
@@ -93,7 +95,7 @@ const HomeScreen = () => {
 
     const applyFilters = () => {
         if (filters) {
-            page = 1;
+            setPage(1);
             let params: paramsType = { page, ...filters as {} }
             setImages([]);
             if (activeCategory) params.category = activeCategory;
@@ -105,7 +107,7 @@ const HomeScreen = () => {
 
     const resetFilters = () => {
         if (filters) {
-            page = 1;
+            setPage(1);
             setFilters(null);
             setImages([]);
             let params: paramsType = { page }
@@ -115,11 +117,37 @@ const HomeScreen = () => {
         setFilters(null);
     }
 
+    const handleScrollUp = () => {
+        scrollRef?.current?.scrollTo({
+            y: 0,
+            animated: true
+        })
+    }
+
+    const handleScroll = (event: any) => {
+        const contentHeight = event.nativeEvent.contentSize.height;
+        const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
+        const scrollOffset = event.nativeEvent.contentOffset.y;
+        const bottomPosition = contentHeight - scrollViewHeight;
+        if (scrollOffset >= bottomPosition - 1) {
+            if (!isBottomReached) {
+                setIsBottomReached(true);
+                setPage(prevPage => prevPage + 1);
+                let params: paramsType = { page, ...filters as any };
+                if (activeCategory) params.category = activeCategory;
+                if (searchQuery) params.q = searchQuery;
+                fetchImages(params);
+            }
+        } else if (isBottomReached) {
+            setIsBottomReached(false);
+        }
+    }
+
     return (
         <View style={[styles.container, { paddingTop }]}>
             {/* Header */}
             <View style={styles.header}>
-                <Pressable>
+                <Pressable onPress={handleScrollUp}>
                     <Text style={styles.title}>Pexels</Text>
                 </Pressable>
                 <Pressable onPress={openFilterModal}>
@@ -128,7 +156,7 @@ const HomeScreen = () => {
             </View>
 
             {/* Search Bar */}
-            <ScrollView contentContainerStyle={{ gap: 15 }}>
+            <ScrollView contentContainerStyle={{ gap: 15 }} onScroll={handleScroll} scrollEventThrottle={5} ref={scrollRef}>
                 <View style={styles.searchBar}>
                     <View style={styles.searchIcon}>
                         <Feather name="search" size={24} color={theme.colors.neutral(0.4)} />
@@ -145,7 +173,6 @@ const HomeScreen = () => {
                 </View>
 
                 {/* Applied filters */}
-
                 {
                     filters && (<SelectedFilters filters={filters} setFilters={setFilters} setImages={setImages} searchQuery={searchQuery} activeCategory={activeCategory} fetchImages={fetchImages} />)
                 }
@@ -161,6 +188,7 @@ const HomeScreen = () => {
                     <FilterModal modalRef={modalRef} filters={filters} setFilters={setFilters} onClose={closeFilterModal} onApply={applyFilters} onReset={resetFilters} />
                 </View>
 
+                {/* Loading Animation */}
                 <View style={{ marginBottom: 70, marginTop: images.length > 0 ? 10 : 70 }}>
                     <ActivityIndicator size={'large'} />
                 </View>
